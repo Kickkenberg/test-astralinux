@@ -7,24 +7,22 @@ docker build -t astra-systemd .
 
 # Запуск контейнера
 
-docker run -d \
-  --name astra-systemd-test \
+docker run -d --name astra-systemd \
   --privileged \
   --cgroupns=host \
-  -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
   --tmpfs /run \
   --tmpfs /run/lock \
+  -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
   astra-systemd
 
 # Проверка
 
 docker exec -it astra-systemd-test bash
 ps -p 1 -o comm=        # ожидаем systemd
-systemctl status        # ожидаем State: running
-systemctl --failed      # активные failed-сервисы отключены
+systemctl status         # ожидаем State: running
+systemctl --failed       # активные failed-сервисы отключены
 
 # Особенности
-
-- Некритичные сервисы (openipmi, prometheus) отключены.  
+  
 - systemd работает как PID 1.  
 - Контейнер полностью готов для тестирования systemctl.
