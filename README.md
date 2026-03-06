@@ -19,7 +19,9 @@ docker run -d --name astra-systemd \
 
 docker exec -it astra-systemd-test bash
 ps -p 1 -o comm=        # ожидаем systemd
+
 systemctl status         # ожидаем State: running
+
 systemctl --failed       # активные failed-сервисы отключены
 
 # Особенности
